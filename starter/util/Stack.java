@@ -49,6 +49,9 @@ public class Stack<T> implements Iterable<T> {
         return data;
     }
 
+    /**
+     * @return if the stack is empty
+     */
     public boolean isEmpty() {
         return top == null;
     }
