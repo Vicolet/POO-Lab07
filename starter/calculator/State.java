@@ -99,4 +99,19 @@ public class State {
     public Stack<Double> getStack() {
         return stack;
     }
+
+    /**
+     * Returns the stack as an array of strings.
+     *
+     * @return the stack as an array of strings
+     */
+    public String[] getStackArray() {
+        Object[] stackObjects = stack.toArray();  // Convertit la pile en tableau d'objets
+        String[] stackStrings = new String[stackObjects.length];
+
+        for (int i = 0; i < stackObjects.length; i++) {
+            stackStrings[i] = stackObjects[i].toString();
+        }
+        return stackStrings;
+    }
 }
