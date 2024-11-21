@@ -9,5 +9,6 @@ public class ClearError extends Operator {
         state.setCurrentValue(0.0);  // Réinitialise la valeur courante à 0
         state.clearError();          // Supprime tout message d'erreur
         state.setDecimalMode(false); // Désactive le mode décimal
+        state.setNewEntry(true);     // Active le mode "nouvelle entrée"
     }
 }

@@ -265,8 +265,11 @@ public class JCalculator extends JFrame {
             jNumber.setText(state.getError());
             state.clearError();
         } else {
-            jNumber.setText(state.getCurrentValueAsString()); // Utilise la méthode formatée
+            // Affiche la valeur courante ou "0" si elle est vide
+            String currentValueStr = state.getCurrentValueAsString();
+            jNumber.setText(currentValueStr.isEmpty() ? "0" : currentValueStr);
         }
-        jStack.setListData(state.getStackArray()); // Met à jour la pile avec des valeurs formatées
+        jStack.setListData(state.getStackArray()); // Met à jour l'affichage de la pile
     }
+
 }

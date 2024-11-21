@@ -7,28 +7,34 @@ public class Number extends Operator {
     private final int digit;
 
     public Number(int digit) {
-        this.digit = digit; // Stocke le chiffre associé à ce bouton
+        this.digit = digit;
     }
 
     @Override
     public void execute(State state) {
-        String currentValueStr = state.getCurrentValueAsString();
-
-        // Si la valeur courante est "0" ou vide, remplacez-la par le chiffre
-        if (currentValueStr.isEmpty() || currentValueStr.equals("0")) {
-            currentValueStr = Integer.toString(digit);
-        } else if (state.isDecimalMode()) {
-            // Si en mode décimal, ajoutez le chiffre après le "."
-            currentValueStr += digit;
-        } else {
-            // Sinon, ajoutez le chiffre normalement
-            currentValueStr += digit;
+        // Si le résultat d'une opération est affiché, pousse-le dans la pile
+        if (state.isResultDisplayed()) {
+            state.pushCurrentValue(); // Pousse le résultat dans la pile
+            state.setResultDisplayed(false); // Désactive l'indicateur de résultat affiché
         }
 
-        // Désactive le mode décimal après l'ajout d'un chiffre
-        state.setDecimalMode(false);
+        // Si en mode nouvelle entrée (après Backspace ou opération), remplace "0"
+        if (state.isNewEntry()) {
+            state.setCurrentValue((double) digit); // Remplace par la nouvelle valeur
+            state.setNewEntry(false); // Désactive le mode "nouvelle entrée"
+        } else {
+            // Récupère la valeur actuelle sous forme de chaîne
+            String currentValueStr = state.getCurrentValueAsString();
 
-        // Met à jour la valeur courante
-        state.setCurrentValue(Double.parseDouble(currentValueStr));
+            // Ajoute le chiffre à la fin de la chaîne
+            if (currentValueStr.equals("0")) {
+                currentValueStr = Integer.toString(digit); // Remplace "0" par le chiffre
+            } else {
+                currentValueStr += digit; // Ajoute le chiffre
+            }
+
+            // Met à jour la valeur actuelle
+            state.setCurrentValue(Double.parseDouble(currentValueStr));
+        }
     }
 }

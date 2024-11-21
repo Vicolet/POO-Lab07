@@ -8,14 +8,22 @@ public class State {
     private Double memory = null;
     private String errorMessage = null;
     private boolean isDecimalMode = false;
+    private boolean isNewEntry = true;
+    private boolean isResultDisplayed = false; // Indique si le résultat d'une opération est affiché
+
+
 
 
     /**
      * Pushes the current value to the stack and resets the current value to 0.
      */
     public void pushCurrentValue() {
-        stack.push(currentValue);
-        currentValue = 0.0;
+        if (currentValue != null) {
+            stack.push(currentValue); // Pousse la valeur courante dans la pile
+            currentValue = 0.0; // Réinitialise currentValue à 0 après le push
+
+        }
+        setNewEntry(true); // Active le mode "nouvelle entrée" après le push
     }
 
     /**
@@ -63,7 +71,7 @@ public class State {
      * Clears the error message.
      */
     public void clearError() {
-        errorMessage = null;
+        errorMessage = null; // Supprime les erreurs existantes
     }
 
     /**
@@ -85,25 +93,30 @@ public class State {
     }
 
     public String getCurrentValueAsString() {
-        if (isDecimalMode && currentValue == currentValue.intValue()) {
-            return currentValue.intValue() + "."; // Ajoute un "." pour indiquer le mode décimal
+        if (currentValue == null || currentValue == 0.0) {
+            return "0"; // Affiche "0" si aucune valeur n'est définie
         }
 
+        // Si la valeur est un entier, affiche sans ".0"
         if (currentValue == currentValue.intValue()) {
-            return String.valueOf(currentValue.intValue()); // Affiche comme un entier si pas en mode décimal
+            return String.valueOf(currentValue.intValue());
         }
 
         return currentValue.toString(); // Sinon, affiche comme un double
     }
 
+
     /**
      * Clears all values in the stack and resets the current value to 0.
      */
     public void clearAll() {
-        stack = new Stack<>();
-        currentValue = 0.0;
-        clearError();
+        stack = new Stack<>();    // Vide la pile
+        currentValue = 0.0;       // Réinitialise la valeur courante
+        memory = null;            // Réinitialise la mémoire
+        clearError();             // Supprime tout message d'erreur
+        isNewEntry = true;        // Active le mode "nouvelle entrée"
     }
+
 
     /**
      * Returns the stack.
@@ -151,6 +164,26 @@ public class State {
 
     public void setDecimalMode(boolean decimalMode) {
         isDecimalMode = decimalMode;
+    }
+
+    // Getter pour isNewEntry
+    public boolean isNewEntry() {
+        return isNewEntry;
+    }
+
+    // Setter pour isNewEntry
+    public void setNewEntry(boolean newEntry) {
+        this.isNewEntry = newEntry;
+    }
+
+    // Getter pour isResultDisplayed
+    public boolean isResultDisplayed() {
+        return isResultDisplayed;
+    }
+
+    // Setter pour isResultDisplayed
+    public void setResultDisplayed(boolean resultDisplayed) {
+        this.isResultDisplayed = resultDisplayed;
     }
 
 }

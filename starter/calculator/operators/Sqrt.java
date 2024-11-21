@@ -6,11 +6,17 @@ import calculator.State;
 public class Sqrt extends Operator {
     @Override
     public void execute(State state) {
-        double value = state.getCurrentValue();
-        if (value < 0) {
-            state.setError("Square root of a negative number");
-        } else {
-            state.setCurrentValue(Math.sqrt(value));
+        double current = state.getCurrentValue();
+
+        if (current < 0) {
+            state.setError("Erreur : Racine carrée d'un nombre négatif");
+            return;
         }
+
+        double result = Math.sqrt(current);
+
+        state.setCurrentValue(result);
+        state.setNewEntry(true);
+        state.setResultDisplayed(true);
     }
 }

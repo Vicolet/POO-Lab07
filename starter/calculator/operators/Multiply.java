@@ -6,9 +6,18 @@ import calculator.State;
 public class Multiply extends Operator {
     @Override
     public void execute(State state) {
-        double b = state.pop();
-        double a = state.pop();
-        state.setCurrentValue(a * b);
-        state.pushCurrentValue();
+        if (state.getStack().isEmpty()) {
+            state.setError("Erreur : Pile vide");
+            return;
+        }
+
+        double stackTop = state.pop();
+        double current = state.getCurrentValue();
+
+        double result = stackTop * current;
+
+        state.setCurrentValue(result);
+        state.setNewEntry(true);
+        state.setResultDisplayed(true);
     }
 }

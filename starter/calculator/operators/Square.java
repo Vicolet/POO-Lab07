@@ -6,7 +6,12 @@ import calculator.State;
 public class Square extends Operator {
     @Override
     public void execute(State state) {
-        double value = state.getCurrentValue();
-        state.setCurrentValue(value * value);
+        double current = state.getCurrentValue();
+
+        double result = current * current;
+
+        state.setCurrentValue(result);
+        state.setNewEntry(true);
+        state.setResultDisplayed(true);
     }
 }
