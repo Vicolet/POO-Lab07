@@ -261,14 +261,12 @@ public class JCalculator extends JFrame {
 
     // Mise à jour de l'affichage après chaque opération
     private void update() {
-        // Met à jour la valeur courante ou affiche une erreur
         if (state.getError() != null) {
             jNumber.setText(state.getError());
             state.clearError();
         } else {
-            jNumber.setText(state.getCurrentValue().toString());
+            jNumber.setText(state.getCurrentValueAsString()); // Utilise la méthode formatée
         }
-        // Met à jour l'affichage de la pile
-        jStack.setListData(state.getStackArray());
+        jStack.setListData(state.getStackArray()); // Met à jour la pile avec des valeurs formatées
     }
 }

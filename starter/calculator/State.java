@@ -82,6 +82,10 @@ public class State {
         currentValue = value;
     }
 
+    public String getCurrentValueAsString() {
+        return formatDouble(currentValue);
+    }
+
     /**
      * Clears all values in the stack and resets the current value to 0.
      */
@@ -106,12 +110,28 @@ public class State {
      * @return the stack as an array of strings
      */
     public String[] getStackArray() {
-        Object[] stackObjects = stack.toArray();  // Convertit la pile en tableau d'objets
+        Object[] stackObjects = stack.toArray(); // Convertit la pile en tableau d'objets
         String[] stackStrings = new String[stackObjects.length];
 
         for (int i = 0; i < stackObjects.length; i++) {
-            stackStrings[i] = stackObjects[i].toString();
+            stackStrings[i] = formatDouble((Double) stackObjects[i]);
         }
         return stackStrings;
+    }
+
+    /**
+     * Formats a double value to a string.
+     *
+     * @param value the value to format
+     * @return the formatted value
+     */
+    public String formatDouble(Double value) {
+        if (value == null) {
+            return ""; // Retourne une chaîne vide si la valeur est null
+        }
+        if (value == value.intValue()) {
+            return String.valueOf(value.intValue()); // Si c'est un entier, affiche sans ".0"
+        }
+        return value.toString(); // Sinon, retourne le Double sous sa forme classique
     }
 }

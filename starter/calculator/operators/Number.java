@@ -7,23 +7,25 @@ public class Number extends Operator {
     private final int digit;
 
     public Number(int digit) {
-        this.digit = digit;
+        this.digit = digit;  // Stocke le chiffre associé à ce bouton
     }
 
     @Override
     public void execute(State state) {
-        // Convert the current value to a string
-        String currentValueStr = state.getCurrentValue().toString();
+        String currentValueStr = state.getCurrentValueAsString();  // Récupère la valeur courante formatée
 
-        // if the current value is 0, replace it with the digit
-        if (currentValueStr.equals("0")) {
+        // Si la valeur courante est vide ou égale à "0", remplace-la par le chiffre
+        if (currentValueStr.equals("") || currentValueStr.equals("0")) {
             currentValueStr = Integer.toString(digit);
         } else {
-            // Otherwise, append the digit to the current value
+            // Sinon, ajoute le chiffre à la fin de la chaîne
             currentValueStr += digit;
         }
 
-        // Set the current value to the new value
+        // Convertit la chaîne en Double et met à jour l'état
         state.setCurrentValue(Double.parseDouble(currentValueStr));
+
+        // Formatage de la valeur mise à jour (utilisation facultative si getCurrentValueAsString() s'en charge)
+        state.setCurrentValue(Double.valueOf(state.formatDouble(state.getCurrentValue())));
     }
 }
