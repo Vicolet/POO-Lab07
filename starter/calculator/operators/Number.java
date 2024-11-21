@@ -15,7 +15,7 @@ public class Number extends Operator {
         String currentValueStr = state.getCurrentValueAsString();
 
         // Si la valeur courante est "0" ou vide, remplacez-la par le chiffre
-        if (currentValueStr.equals("") || currentValueStr.equals("0")) {
+        if (currentValueStr.isEmpty() || currentValueStr.equals("0")) {
             currentValueStr = Integer.toString(digit);
         } else if (state.isDecimalMode()) {
             // Si en mode décimal, ajoutez le chiffre après le "."
