@@ -7,17 +7,17 @@ public class DecimalPoint extends Operator {
 
     @Override
     public void execute(State state) {
-        String currentValueStr = state.getCurrentValueAsString();  // Récupère la valeur courante sous forme de chaîne
-
-        // Ajoute un point décimal uniquement s'il n'est pas déjà présent
-        if (!currentValueStr.contains(".")) {
-            currentValueStr += ".";  // Ajoute le point décimal
+        // Si déjà en mode décimal, ne rien faire
+        if (state.isDecimalMode()) {
+            return;
         }
 
-        // Met à jour la valeur courante après l'ajout du point décimal
-        state.setCurrentValue(Double.parseDouble(currentValueStr));
+        // Active le mode décimal
+        state.setDecimalMode(true);
 
-        // Met à jour avec le formatage correct
-        state.setCurrentValue(Double.valueOf(state.formatDouble(state.getCurrentValue())));
+        // Si la valeur courante est un entier, ajoute le "." à l'affichage
+        if (state.getCurrentValue() == state.getCurrentValue().intValue()) {
+            state.setCurrentValue(state.getCurrentValue()); // Assure qu'elle reste un double
+        }
     }
 }

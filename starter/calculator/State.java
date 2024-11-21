@@ -7,6 +7,8 @@ public class State {
     private Double currentValue = 0.0;
     private Double memory = null;
     private String errorMessage = null;
+    private boolean isDecimalMode = false;
+
 
     /**
      * Pushes the current value to the stack and resets the current value to 0.
@@ -83,7 +85,15 @@ public class State {
     }
 
     public String getCurrentValueAsString() {
-        return formatDouble(currentValue);
+        if (isDecimalMode && currentValue == currentValue.intValue()) {
+            return currentValue.intValue() + "."; // Ajoute un "." pour indiquer le mode décimal
+        }
+
+        if (currentValue == currentValue.intValue()) {
+            return String.valueOf(currentValue.intValue()); // Affiche comme un entier si pas en mode décimal
+        }
+
+        return currentValue.toString(); // Sinon, affiche comme un double
     }
 
     /**
@@ -134,4 +144,13 @@ public class State {
         }
         return value.toString(); // Sinon, retourne le Double sous sa forme classique
     }
+
+    public boolean isDecimalMode() {
+        return isDecimalMode;
+    }
+
+    public void setDecimalMode(boolean decimalMode) {
+        isDecimalMode = decimalMode;
+    }
+
 }
