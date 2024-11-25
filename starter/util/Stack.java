@@ -3,28 +3,45 @@ package util;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
+/**
+ * A generic stack implementation using a singly linked list.
+ *
+ * @param <T> the type of elements in the stack
+ */
 public class Stack<T> implements Iterable<T> {
+
+    /**
+     * A node representing an element in the stack.
+     */
     private class Node {
         T data;
         Node next;
 
+        /**
+         * Creates a new node with the specified data and reference to the next node.
+         *
+         * @param data the data stored in the node
+         * @param next the next node in the stack
+         */
         Node(T data, Node next) {
             this.data = data;
             this.next = next;
         }
     }
 
-    private Node top; // top of stack
-    private int size; // size of the stack
+    private Node top; // Top of the stack
+    private int size; // Size of the stack
 
-    // Constructor
+    /**
+     * Constructs an empty stack.
+     */
     public Stack() {
         top = null;
         size = 0;
     }
 
     /**
-     * Adds the item to this stack
+     * Adds an item to the top of this stack.
      *
      * @param data the item to add
      */
@@ -34,14 +51,14 @@ public class Stack<T> implements Iterable<T> {
     }
 
     /**
-     * Removes and returns the item most recently added to this stack
+     * Removes and returns the item most recently added to this stack.
      *
      * @return the item most recently added
      * @throws NoSuchElementException if this stack is empty
      */
     public T pop() {
         if (isEmpty()) {
-            throw new NoSuchElementException("Stack empty");
+            throw new NoSuchElementException("Stack is empty");
         }
         T data = top.data;
         top = top.next;
@@ -50,14 +67,27 @@ public class Stack<T> implements Iterable<T> {
     }
 
     /**
-     * @return if the stack is empty
+     * Checks if the stack is empty.
+     *
+     * @return {@code true} if the stack is empty, {@code false} otherwise
      */
     public boolean isEmpty() {
         return top == null;
     }
 
     /**
-     * @return the item most recently added to this stack
+     * Returns the size of this stack.
+     *
+     * @return the number of items in this stack
+     */
+    public int size() {
+        return size;
+    }
+
+    /**
+     * Returns a string representation of this stack.
+     *
+     * @return a space-separated string of stack items in LIFO order
      */
     @Override
     public String toString() {
@@ -71,7 +101,9 @@ public class Stack<T> implements Iterable<T> {
     }
 
     /**
-     * @return an array representation of the items in this stack
+     * Returns an array representation of the items in this stack.
+     *
+     * @return an array of items in LIFO order
      */
     public Object[] toArray() {
         Object[] array = new Object[size];
@@ -83,14 +115,9 @@ public class Stack<T> implements Iterable<T> {
     }
 
     /**
-     * @return the number of items in this stack
-     */
-    public int size() {
-        return size;
-    }
-
-    /**
-     * @return an iterator that iterates over the items in this stack in LIFO order
+     * Returns an iterator that iterates over the items in this stack in LIFO order.
+     *
+     * @return an iterator for this stack
      */
     @Override
     public Iterator<T> iterator() {
@@ -105,7 +132,7 @@ public class Stack<T> implements Iterable<T> {
             @Override
             public T next() {
                 if (!hasNext()) {
-                    throw new NoSuchElementException();
+                    throw new NoSuchElementException("No more elements in the stack");
                 }
                 T data = current.data;
                 current = current.next;
