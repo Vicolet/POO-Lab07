@@ -10,8 +10,7 @@ public class State {
     private boolean isDecimalMode = false;
     private boolean isNewEntry = true;
     private boolean isResultDisplayed = false; // Indique si le résultat d'une opération est affiché
-
-
+    private String currentValueString = "0"; // Valeur courante sous forme de chaîne
 
 
     /**
@@ -89,20 +88,40 @@ public class State {
      * @param value the value to set
      */
     public void setCurrentValue(Double value) {
-        currentValue = value;
+        this.currentValue = value;
+        this.currentValueString = null; // Réinitialise la chaîne temporaire
     }
 
+
     public String getCurrentValueAsString() {
+        // Si une chaîne temporaire est définie, retournez-la
+        if (currentValueString != null) {
+            return currentValueString;
+        }
+
+        // Sinon, utilisez le format classique
         if (currentValue == null || currentValue == 0.0) {
             return "0"; // Affiche "0" si aucune valeur n'est définie
         }
 
-        // Si la valeur est un entier, affiche sans ".0"
-        if (currentValue == currentValue.intValue()) {
-            return String.valueOf(currentValue.intValue());
+        // Convertit la valeur courante en chaîne
+        String valueStr = currentValue.toString();
+
+        // Si c'est un entier, affiche sans ".0"
+        if (valueStr.endsWith(".0")) {
+            return valueStr.substring(0, valueStr.length() - 2);
         }
 
-        return currentValue.toString(); // Sinon, affiche comme un double
+        return valueStr;
+    }
+
+    public void setCurrentValueString(String value) {
+        this.currentValueString = value;
+        try {
+            this.currentValue = Double.parseDouble(value); // Met à jour la valeur numérique
+        } catch (NumberFormatException e) {
+            this.currentValue = 0.0; // Valeur par défaut en cas d'erreur
+        }
     }
 
 
@@ -185,5 +204,4 @@ public class State {
     public void setResultDisplayed(boolean resultDisplayed) {
         this.isResultDisplayed = resultDisplayed;
     }
-
 }
