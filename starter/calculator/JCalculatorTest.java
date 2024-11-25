@@ -128,6 +128,7 @@ public class JCalculatorTest {
     public void testMemoryRecallAndStore() {
         clickButton("5");
         clickButton("MS");
+        clickButton("CE");
         clickButton("MR");
 
         assertEquals("5", displayField.getText(), "MemoryRecall should retrieve the stored value");
