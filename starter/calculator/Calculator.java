@@ -1,122 +1,122 @@
 package calculator;
 
 import calculator.operators.*;
+import calculator.operators.Number;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Scanner;
 
 /**
- * A console-based calculator that utilizes the State and Operator classes
- * for performing Reverse Polish Notation (RPN) calculations.
+ * The Calculator class represents a simple calculator with basic arithmetic operations.
+ * It uses a stack-based approach to process user input and perform calculations.
+ * The calculator supports addition, subtraction, multiplication, division, square root,
+ * square, inverse, negate, memory recall, memory store, backspace, clear error,
+ * clear, and enter operations. The calculator runs in a command-line interface.
  */
 public class Calculator {
-    private final State state = new State();
-    private final Map<String, Operator> operators = new HashMap<>();
+    private final State state;
 
-    /**
-     * Initializes the calculator and registers all supported operators.
-     */
     public Calculator() {
-        // Registering basic operators
-        operators.put("+", new Add());
-        operators.put("-", new Subtract());
-        operators.put("*", new Multiply());
-        operators.put("/", new Divide());
-        operators.put("sqrt", new Sqrt());
-        operators.put("square", new Square());
-        operators.put("negate", new Negate());
-        operators.put("1/x", new Inverse());
-
-        // Memory operators
-        operators.put("ms", new MemoryStore());
-        operators.put("mr", new MemoryRecall());
-
-        // Clear operators
-        operators.put("ce", new ClearError());
-        operators.put("c", new ClearAll());
+        this.state = new State(); // Initialize the calculator state
     }
 
-    /**
-     * Starts the console-based calculator.
-     */
     public void run() {
         Scanner scanner = new Scanner(System.in);
-        System.out.println("Console Calculator - Type 'exit' to quit.");
 
         while (true) {
             System.out.print("> ");
-            String input = scanner.nextLine().trim();
+            String input = scanner.nextLine();
 
-            // Exit the calculator
             if (input.equalsIgnoreCase("exit")) {
-                System.out.println("Goodbye!");
                 break;
             }
 
-            try {
-                // Process numerical input
-                if (isNumeric(input)) {
-                    double number = Double.parseDouble(input);
-                    state.setCurrentValue(number);
-                    new Enter().execute(state); // Push the number onto the stack
-                }
-                // Process operator input
-                else if (operators.containsKey(input)) {
-                    operators.get(input).execute(state);
-                }
-                // Invalid input
-                else {
-                    System.out.println("Error: Unknown command '" + input + "'");
-                    continue;
-                }
+            processInput(input);
 
-                // Display the stack on a single line
-                displayStackInline();
-            } catch (Exception e) {
-                System.out.println("Error: " + e.getMessage());
+            displayState();
+        }
+
+        System.out.println("Exiting calculator.");
+    }
+
+    /**
+     * Processes the user input and executes the corresponding operation.
+     *
+     * @param input the user input
+     */
+    private void processInput(String input) {
+        Operator operator = OperatorList.createOperator(input, state);
+
+        if (operator != null) {
+            operator.execute(state);
+
+            if (state.getError() == null) { // No error
+                // Display the current state or result
+                System.out.println("Result: " + state.getCurrentValueAsString());
+            } else {
+                // Display the error message
+                System.out.println("Error: " + state.getError());
+                state.clearError(); // Clear the error after displaying it
             }
         }
-
-        scanner.close();
     }
 
     /**
-     * Checks if a string can be interpreted as a number.
-     *
-     * @param input the input string
-     * @return true if the string is numeric, false otherwise
+     * Displays the current state of the stack and the current value.
      */
-    private boolean isNumeric(String input) {
-        try {
-            Double.parseDouble(input);
-            return true;
-        } catch (NumberFormatException e) {
-            return false;
-        }
+    private void displayState() {
+        System.out.println("Stack: " + String.join(" ", state.getStackArray()));
+        System.out.println("Current: " + state.getCurrentValueAsString());
     }
 
     /**
-     * Displays the current stack in a single line in the console.
+     * Inner class to manage operators and map user input to corresponding operations.
      */
-    private void displayStackInline() {
-        String[] stackArray = state.getStackArray();
-        if (stackArray.length == 0) {
-            System.out.println("<empty stack>");
-        } else {
-            for (int i = stackArray.length - 1; i >= 0; i--) {
-                System.out.print(stackArray[i] + " ");
+    public static class OperatorList {
+        public static Operator createOperator(String input, State state) {
+            switch (input.toLowerCase()) {
+                case "+":
+                    return new Add();
+                case "-":
+                    return new Subtract();
+                case "*":
+                    return new Multiply();
+                case "/":
+                    return new Divide();
+                case "sqrt":
+                    return new Sqrt();
+                case "x^2":
+                    return new Square();
+                case "1/x":
+                    return new Inverse();
+                case "+/-":
+                    return new Negate();
+                case "mr":
+                    return new MemoryRecall();
+                case "ms":
+                    return new MemoryStore();
+                case "<=":
+                    return new Backspace();
+                case "ce":
+                    return new ClearError();
+                case "c":
+                    return new ClearAll();
+                case "ent": // Handling the "Enter" operation
+                    return new Enter();
+                default:
+                    try {
+                        // If the input is numeric, create a Number operator
+                        return new Number(Integer.parseInt(input));
+                    } catch (NumberFormatException e) {
+                        System.out.println("Unknown operator or invalid input: " + input);
+                        return null;
+                    }
             }
-            System.out.println(); // Newline after the stack
         }
     }
 
-    /**
-     * Entry point for the console-based calculator.
-     *
-     * @param args command-line arguments (not used)
-     */
     public static void main(String[] args) {
-        new Calculator().run();
+        System.out.println("Welcome to the Calculator.");
+        Calculator calculator = new Calculator();
+        calculator.run();
     }
 }
