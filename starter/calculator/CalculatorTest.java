@@ -60,7 +60,7 @@ public class CalculatorTest {
     }
 
     @Test
-    public void     testMultiplication() {
+    public void testMultiplication() {
         simulateInput("3\nEnt\n5\n*\nexit\n");
         calculator.run();
 
