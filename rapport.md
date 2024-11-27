@@ -1,52 +1,37 @@
-### **Rapport lab07 POO**
+# Rapport Labo 7 - Calculatrice
+Victor Nicolet, Léon Surbeck
+
+## **1. Classe `Stack`**
+
+### **Responsabilités**
+
+La classe `Stack` est une classe générique utilisée pour gérer les calculs intermédiaires. Elle permet de stocker et de
+récupérer des valeurs dans un ordre LIFO (Last In, First Out).
+
+### **Structure**
+
+- **Méthodes** :
+    - `push(E item)`: ajoute un élément en haut de la pile.
+    - `pop()`: retire et renvoie l'élément en haut de la pile.
+    - `isEmpty()`: vérifie si la pile est vide.
+    - `toArray()`: convertit la pile en un tableau.
+    - `iterator()`: renvoie un itérateur pour parcourir les éléments de la pile.
+
+### **Décisions Architecturales**
+
+- **Réutilisabilité** : La classe `Stack` est générique, ce qui permet de l'utiliser avec différents types d'éléments.
+- **Simplicité** : Les opérations de base de la pile sont implémentées de manière simple et efficace.
 
 ---
 
-## **Choix de Conception**
+## **2. Classe `Operator`**
 
-### **1. Classe `State`**
-
-#### **Responsabilités**
-
-La classe `State` est le cœur du système. Elle encapsule l’état interne de la calculatrice, comprenant :
-
-- La valeur courante.
-- La pile pour les calculs intermédiaires.
-- Les messages d’erreur éventuels.
-- Les indicateurs de mode (nouvelle entrée, mode décimal, affichage d’un résultat).
-
-#### **Structure**
-
-- **Attributs principaux** :
-    - `currentValue`: représente la valeur actuellement affichée.
-    - `stack`: une pile pour stocker les valeurs intermédiaires.
-    - `memory`: une zone mémoire pour stocker une valeur spécifique.
-    - `isDecimalMode`, `isNewEntry`, `isResultDisplayed`: des indicateurs pour gérer l’état des entrées et des
-      affichages.
-- **Méthodes principales** :
-    - Gestion de la pile (`pushCurrentValue`, `pop`).
-    - Gestion des erreurs (`setError`, `clearError`).
-    - Gestion de la mémoire (`storeInMemory`, `recallFromMemory`).
-    - Conversion de la valeur courante en chaîne (`getCurrentValueAsString`).
-
-#### **Décisions Architecturales**
-
-- **Encapsulation** : Tous les attributs sont privés, avec des accesseurs et des mutateurs pour garantir un contrôle
-  strict sur l’état.
-- **Responsabilité unique** : La classe `State` se concentre uniquement sur la gestion de l’état de la calculatrice.
-- **Composition** : Utilisation d’une classe générique `Stack` pour gérer les calculs intermédiaires, favorisant la
-  réutilisabilité.
-
----
-
-### **2. Classe `Operator`**
-
-#### **Responsabilités**
+### **Responsabilités**
 
 La classe abstraite `Operator` définit une interface commune pour toutes les opérations. Elle permet à chaque opération
 de modifier l’état de la calculatrice via un comportement polymorphique.
 
-#### **Structure**
+### **Structure**
 
 - **Méthode abstraite** :
     - `execute(State state)`: chaque sous-classe implémente cette méthode pour effectuer une opération spécifique.
@@ -57,13 +42,61 @@ de modifier l’état de la calculatrice via un comportement polymorphique.
     - Gestion de la mémoire : `MemoryRecall`, `MemoryStore`.
     - Contrôles : `Backspace`, `ClearError`, `ClearAll`.
 
-#### **Décisions Architecturales**
+### **Hiérarchie des classes**
+
+- `Operator` hérite de `DefaultOperator`.
+- `DefaultOperator` hérite de `UnaryOperator`.
+- `UnaryOperator` hérite de `BinaryOperator`.
+
+### **Décisions Architecturales**
 
 - **Polymorphisme** : Les sous-classes de `Operator` implémentent la méthode `execute`, permettant d’ajouter de
   nouvelles opérations sans modifier le code existant.
 - **Héritage** : Chaque opérateur hérite de `Operator` pour bénéficier d’une interface commune.
 - **Extensibilité** : Ajouter une nouvelle opération ne nécessite que la création d’une nouvelle sous-classe de
   `Operator`.
+
+### **Décisions Architecturales**
+
+- **Polymorphisme** : Les sous-classes de `Operator` implémentent la méthode `execute`, permettant d’ajouter de
+  nouvelles opérations sans modifier le code existant.
+- **Héritage** : Chaque opérateur hérite de `Operator` pour bénéficier d’une interface commune.
+- **Extensibilité** : Ajouter une nouvelle opération ne nécessite que la création d’une nouvelle sous-classe de
+  `Operator`.
+
+---
+
+## **3. Classe `State`**
+
+### **Responsabilités**
+
+La classe `State` gère l'état interne de la calculatrice, y compris les opérations sur la pile, la gestion de la
+mémoire, la gestion des erreurs et les utilitaires de formatage.
+
+### **Structure**
+
+- **Attributs** :
+    - `stack`: une instance de `Stack` pour gérer les valeurs intermédiaires.
+    - `currentValue`: la valeur actuelle affichée par la calculatrice.
+    - `memory`: la valeur stockée en mémoire.
+    - `error`: le message d'erreur actuel.
+    - `isNewEntry`, `isResultDisplayed`, `isDecimalMode`: indicateurs de l'état de la calculatrice.
+
+- **Méthodes** :
+    - `pushCurrentValue()`, `pop()`, `getStack()`: opérations sur la pile.
+    - `setCurrentValue(double value)`, `getCurrentValue()`: gestion de la valeur actuelle.
+    - `storeInMemory()`, `recallFromMemory()`: gestion de la mémoire.
+    - `setError(String error)`, `getError()`, `clearError()`: gestion des erreurs.
+    - `clearAll()`: réinitialise tous les attributs de l'état.
+    - `getStackArray()`: convertit la pile en un tableau de chaînes.
+    - `getCurrentValueAsString()`: formate la valeur actuelle en chaîne.
+
+### **Décisions Architecturales**
+
+- **Encapsulation** : La classe `State` encapsule tous les aspects de l'état de la calculatrice, facilitant la gestion
+  et la modification de cet état.
+- **Modularité** : Les différentes responsabilités (pile, mémoire, erreurs) sont bien séparées au sein de la classe
+  `State`.
 
 ---
 
@@ -105,26 +138,36 @@ de modifier l’état de la calculatrice via un comportement polymorphique.
 - Interaction entre les classes `State` et `Operator`.
 - Résultats attendus : les opérations modifient l’état et l’affichage de manière cohérente.
 
----
-
 ### **2. Résultats obtenus**
 
-| Test                             | Résultat attendu            | Résultat obtenu |
-|----------------------------------|-----------------------------|-----------------|
-| Addition (e.g., 5 + 3)           | Affiche `8`                 | Réussi          |
-| Division par zéro                | Affiche `Erreur`            | Réussi          |
-| Racine carrée (e.g., sqrt(-1))   | Affiche `Erreur`            | Réussi          |
-| Gestion de la mémoire            | Rappel des valeurs stockées | Réussi          |
-| Contrôle `Backspace`             | Supprime le dernier chiffre | Réussi          |
-| Gestion des indicateurs d’entrée | Changements cohérents       | Réussi          |
+| **StackTest**             | **Result** |  | **StateTest**                | **Result** |
+|---------------------------|------------|--|------------------------------|------------|
+| `testToArray()`           | ✅ Passed   |  | `testCurrentValue()`         | ✅ Passed   |
+| `testPop()`               | ✅ Passed   |  | `testStackToArray()`         | ✅ Passed   |
+| `testSize()`              | ✅ Passed   |  | `testStackOperations()`      | ✅ Passed   |
+| `testPopFromEmptyStack()` | ✅ Passed   |  | `testFlags()`                | ✅ Passed   |
+| `testPushAndToString()`   | ✅ Passed   |  | `testMemoryOperations()`     | ✅ Passed   |
+| `testIsEmpty()`           | ✅ Passed   |  | `testErrorHandling()`        | ✅ Passed   |
+| `testIterator()`          | ✅ Passed   |  | `testCurrentValueAsString()` | ✅ Passed   |
+|                           |            |  | `testClearAll()`             | ✅ Passed   |
 
-Tous les tests ont été validés avec succès, confirmant le bon fonctionnement du système.
+| **JCalculatorTest**          | **Result** | | **CalculatorTest**              | **Result** |
+|------------------------------|------------|-|---------------------------------|------------|
+| `testClearError()`           | ✅ Passed   | | `testMemoryStoreAndRecall()`    | ✅ Passed   |
+| `testAdd()`                  | ✅ Passed   | | `testMultiplication()`          | ✅ Passed   |
+| `testSubtract()`             | ✅ Passed   | | `testAddition()`                | ✅ Passed   |
+| `testEnter()`                | ✅ Passed   | | `testEnterPushesValueToStack()` | ✅ Passed   |
+| `testSqrt()`                 | ✅ Passed   | | `testDivisionByZero()`          | ✅ Passed   |
+| `testMemoryRecallAndStore()` | ✅ Passed   | | `testDivision()`                | ✅ Passed   |
+| `testDecimalPoint()`         | ✅ Passed   | | `testSquareRoot()`              | ✅ Passed   |
+| `testDivide()`               | ✅ Passed   | | `testClearAll()`                | ✅ Passed   |
+| `testMultiply()`             | ✅ Passed   | | `testInvalidInput()`            | ✅ Passed   |
+| `testClearAll()`             | ✅ Passed   | | `testNegate()`                  | ✅ Passed   |
+| `testInverse()`              | ✅ Passed   | | `testSquare()`                  | ✅ Passed   |
+| `testNegate()`               | ✅ Passed   | | `testSubtraction()`             | ✅ Passed   |
+| `testNumber()`               | ✅ Passed   | | `testBackspace()`               | ✅ Passed   |
+| `testSquare()`               | ✅ Passed   |
+| `testBackspace()`            | ✅ Passed   |
 
----
-
-## **Conclusion**
-
-La conception du système repose sur des principes solides d’architecture orientée objet, offrant une extensibilité et
-une maintenance simplifiées. La séparation claire des responsabilités entre `State` et `Operator` garantit une gestion
-robuste de l’état et des opérations. Les tests exhaustifs démontrent la fiabilité et la cohérence du système dans des
-scénarios réels et exceptionnels.
+Tous ces tests unitaires sont disponibles dans le dossier `starter/test/`.
+Tous les tests ont été exécutés avec succès, démontrant la robustesse et la fiabilité du système.
