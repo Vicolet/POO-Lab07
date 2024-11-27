@@ -28,8 +28,15 @@ public abstract class UnaryOperator extends DefaultOperator {
      */
     @Override
     protected void performOperation(State state) {
+
         double current = state.getCurrentValue();
         double result = unaryOperation(current, state); // Perform the unary operation
+        if (Double.isNaN(result)) {
+            state.setError("Error");
+            state.setNewEntry(true);
+            state.setResultDisplayed(false);
+            return;
+        }
         state.setCurrentValue(result); // Update the state with the result
         state.setResultDisplayed(true);
     }

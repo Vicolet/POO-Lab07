@@ -48,10 +48,7 @@ public class Divide extends BinaryOperator {
      */
     @Override
     public void execute(State state) {
-        if (state.getStack().isEmpty()) {
-            state.setError("Error: Empty stack"); // Handle empty stack
-            return;
-        }
+
 
         double left = state.pop();  // Retrieve numerator from the stack
         double right = state.getCurrentValue();  // Retrieve denominator

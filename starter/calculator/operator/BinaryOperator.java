@@ -31,6 +31,9 @@ public abstract class BinaryOperator extends UnaryOperator {
      */
     @Override
     protected double unaryOperation(double value, State state) {
+        if (state.getStack().isEmpty()) {
+            return Double.NaN;
+        }
         double leftOperand = state.pop(); // Retrieve the top value from the stack
         double result = binaryOperation(leftOperand, value); // Perform the binary operation
         state.setResultDisplayed(true); // Mark the result as displayed
