@@ -139,7 +139,7 @@ public class CalculatorTest {
         calculator.run();
 
         String output = getConsoleOutput();
-        assertTrue(output.contains("Error: Division by zero"), "The output should display an error for division by zero");
+        assertTrue(output.contains("Error: Invalid operation"), "The output should display an error for division by zero");
     }
 
     @Test

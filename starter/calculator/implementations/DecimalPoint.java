@@ -1,47 +1,50 @@
 package calculator.implementations;
 
-import calculator.operator.UnaryOperator;
+import calculator.operator.DefaultOperator;
 import state.State;
+
 
 /**
  * Represents the decimal point operator. This operator appends a decimal point
  * to the current value if it does not already contain one.
  */
-public class DecimalPoint extends UnaryOperator {
+public class DecimalPoint extends DefaultOperator {
 
     /**
-     * Constructor for DecimalPoint operator.
+     * Adds a decimal point to the current value if it does not already contain one.
+     *
+     * @param value the current value of the calculator (ignored for this operator)
+     * @return the updated value with a decimal point appended
      */
-    public DecimalPoint() {
-        super(); // Call to UnaryOperator's constructor if needed
-    }
-
     @Override
     protected double operation(double value) {
-        // Convert the current value to a string
-        String currentValueStr = String.valueOf(value);
-
-        // If the value is already an integer (no decimal point), add "."
-        if (!currentValueStr.contains(".")) {
-            currentValueStr += "."; // Append the decimal point
-        }
-
-        // Return the updated value as a double
-        return Double.parseDouble(currentValueStr);
+        return value; // The actual operation does not change the numeric value
     }
 
+    /**
+     * Executes the decimal point operation on the calculator's state.
+     * Ensures the decimal point is appended to the current value without
+     * affecting existing digits.
+     *
+     * @param state the current state of the calculator
+     */
     @Override
     public void execute(State state) {
-        // If a result is currently displayed, reset for new input
-        if (state.isResultDisplayed()) {
-            state.setCurrentValue(0.0);      // Reset to 0
-            state.setResultDisplayed(false); // Clear result displayed flag
-            state.setNewEntry(false);       // Prepare for new input
+        String currentValueStr = state.getCurrentValueAsString();
+
+        // If the current value already contains a decimal point, do nothing
+        if (currentValueStr.contains(".")) {
+            return;
         }
 
-        // Perform the decimal point operation using the overridden method
-        double result = operation(state.getCurrentValue());
-        state.setCurrentValue(result);
-        state.setNewEntry(false); // Disable new entry mode
+        // If the current value is in "new entry" mode, replace it with "0."
+        if (state.isNewEntry()) {
+            state.setCurrentValueString("0.");
+            state.setNewEntry(false); // Disable "new entry" mode
+        } else {
+            // Append the decimal point to the current value
+            currentValueStr += ".";
+            state.setCurrentValueString(currentValueStr);
+        }
     }
 }

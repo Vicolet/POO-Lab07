@@ -3,28 +3,43 @@ package calculator.operator;
 import state.State;
 
 /**
- * Represents a binary operator that operates on two operands.
+ * Abstract base class for binary operators.
  */
-public abstract class BinaryOperator extends UnaryOperator {
+public abstract class BinaryOperator extends DefaultOperator {
 
+    /**
+     * Executes the binary operation on the calculator's state.
+     *
+     * @param state the current state of the calculator
+     */
     @Override
     public void execute(State state) {
+        // Check if the stack is empty
         if (state.getStack().isEmpty()) {
-            state.setError("Error: Stack is empty");
+            state.setError("Error: Empty stack");
             return;
         }
 
-        double stackTop = state.pop();        // Retrieve the top value from the stack
-        double currentValue = state.getCurrentValue();
-        double result = operation(stackTop, currentValue); // Perform binary operation
-        assignResult(state, result);                     // Assign result to state
+        double left = state.pop(); // Get the value from the stack
+        double right = state.getCurrentValue(); // Get the current value
+
+        // Perform the operation
+        double result = operation(left, right);
+
+        if (Double.isNaN(result)) {
+            state.setError("Error: Invalid operation");
+        } else {
+            state.setCurrentValue(result);
+            state.setNewEntry(true);
+            state.setResultDisplayed(true);
+        }
     }
 
     /**
-     * Performs a binary operation on two operands.
+     * Performs the specific binary operation.
      *
-     * @param left  the first operand (from the stack)
-     * @param right the second operand (current value)
+     * @param left  the left operand (value from the stack)
+     * @param right the right operand (current value)
      * @return the result of the operation
      */
     protected abstract double operation(double left, double right);

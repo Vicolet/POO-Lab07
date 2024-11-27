@@ -1,23 +1,33 @@
 package calculator.operator;
 
+import state.State;
+
 /**
  * Base class for division-related operations.
- * Handles logic specific to division, including division by zero checks.
  */
 public abstract class DivisionBase extends BinaryOperator {
 
     /**
-     * Constructor for DivisionBase.
+     * Performs a division-related operation. Handles division by zero.
+     *
+     * @param left  the numerator (value from the stack)
+     * @param right the denominator (current value)
+     * @return the result of the operation, or NaN if division by zero
      */
-    public DivisionBase() {
-        super();
-    }
-
     @Override
     protected double operation(double left, double right) {
         if (right == 0) {
-            throw new ArithmeticException("Error: Division by zero");
+            return Double.NaN; // Division by zero
         }
-        return left / right;
+        return divide(left, right);
     }
+
+    /**
+     * Defines the specific division logic for the derived classes.
+     *
+     * @param left  the numerator
+     * @param right the denominator
+     * @return the result of the division
+     */
+    protected abstract double divide(double left, double right);
 }

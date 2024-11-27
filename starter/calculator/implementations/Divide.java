@@ -1,17 +1,22 @@
 package calculator.implementations;
 
 import calculator.operator.DivisionBase;
-import state.State;
 
 /**
- * Represents the division operator. This operator divides the top value
- * of the stack by the current value and updates the state.
+ * Represents the division operator.
  */
 public class Divide extends DivisionBase {
 
-    protected double getLeftOperand(State state) {
-        // Retrieve the top value from the stack
-        return state.getStack().isEmpty() ? 0.0 : state.pop();
+    /**
+     * Implements the basic division logic.
+     *
+     * @param left  the numerator
+     * @param right the denominator
+     * @return the result of dividing {@code left} by {@code right}
+     */
+    @Override
+    protected double divide(double left, double right) {
+        return left / right;
     }
 
     @Override
