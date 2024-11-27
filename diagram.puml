@@ -30,7 +30,8 @@ class DecimalPoint {
 }
 
 class Inverse {
-	# getLeftOperand(state: State): double
+	# divide(left: double, right: double): double
+	+ execute(state: State): void
 	# operation(value: double): double
 }
 
@@ -45,6 +46,7 @@ abstract class Operator {
 
 abstract class DivisionBase {
 	# operation(left: double, right: double): double
+	# {abstract}divide(left: double, right: double): double
 }
 
 class ClearError {
@@ -93,7 +95,7 @@ abstract class DefaultOperator {
 }
 
 class Divide {
-	# getLeftOperand(state: State): double
+	# divide(left: double, right: double): double
 	# operation(value: double): double
 }
 
@@ -139,7 +141,8 @@ class State {
 
 
 class Number {
-	- digit: double
+	- digit: int
+	+ execute(state: State): void
 	# operation(value: double): double
 }
 
@@ -278,10 +281,10 @@ class StateTest {
 
 
 
-UnaryOperator <|-- Backspace
-UnaryOperator <|-- DecimalPoint
+DefaultOperator <|-- Backspace
+DefaultOperator <|-- DecimalPoint
 DivisionBase <|-- Inverse
-UnaryOperator <|-- BinaryOperator
+DefaultOperator <|-- BinaryOperator
 BinaryOperator <|-- DivisionBase
 Operator <|-- ClearError
 BinaryOperator <|-- Add

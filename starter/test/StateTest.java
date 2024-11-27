@@ -1,7 +1,8 @@
-package state;
+package test;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import state.State;
 
 import static org.junit.jupiter.api.Assertions.*;
 
