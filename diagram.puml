@@ -12,19 +12,6 @@ skinparam linetype polyline
 remove *Test*
 remove Main
 
-Negate -d- Divide
-ClearError -d[hidden]- MemoryRecall
-Subtract -d[hidden]- Sqrt
-Divide -d[hidden]- Backspace
-Negate -d[hidden]- Enter
-ClearAll -d[hidden]- Inverse
-Multiply -d[hidden]- DecimalPoint
-MemoryStore -d[hidden]- DecimalPoint
-Add -d[hidden]- Number
-Add -d[hidden]- Square
-MemoryStore -u[hidden]- Inverse
-
-
 ' Additions
 Calculator "1"-u->"1" State: state
 
@@ -33,46 +20,49 @@ Calculator "1"-u->"1" State: state
 ' - state: State
 
 ' ENDSTATIC
-class JCalculatorTest {
-	- calculator: JCalculator
-	- displayField: JTextField
-	- stackDisplay: JList<String>
-	+ setUp(): void
-	- getStackContents(): String[]
-	- clickButton(label: String): void
-	+ testAdd(): void
-	+ testBackspace(): void
-	+ testClearAll(): void
-	+ testClearError(): void
-	+ testDecimalPoint(): void
-	+ testDivide(): void
-	+ testEnter(): void
-	+ testInverse(): void
-	+ testMemoryRecallAndStore(): void
-	+ testMultiply(): void
-	+ testNegate(): void
-	+ testNumber(): void
-	+ testSqrt(): void
-	+ testSquare(): void
-	+ testSubtract(): void
+class Backspace {
+	# operation(value: double): double
 }
 
-
-class Square {
+class DecimalPoint {
+	# operation(value: double): double
 	+ execute(state: State): void
 }
 
 class Inverse {
+	# getLeftOperand(state: State): double
+	# operation(value: double): double
+}
+
+abstract class BinaryOperator {
 	+ execute(state: State): void
+	# {abstract}operation(left: double, right: double): double
+}
+
+abstract class Operator {
+	+ {abstract}execute(state: State): void
+}
+
+abstract class DivisionBase {
+	# operation(left: double, right: double): double
+}
+
+class ClearError {
+	+ execute(state: State): void
+}
+
+class TestUtils {
+	+ {static} getComponentByName(container: Container, name: String): Component
+	+ {static} getButtonByLabel(container: Container, label: String): JButton
 }
 
 class Main {
 	+ {static} main(args: String): void
 }
 
-class TestUtils {
-	+ {static} getComponentByName(container: Container, name: String): Component
-	+ {static} getButtonByLabel(container: Container, label: String): JButton
+class Add {
+	# operation(left: double, right: double): double
+	# operation(value: double): double
 }
 
 class Stack {
@@ -93,94 +83,27 @@ class Stack$Node {
 	~ next: Node
 }
 
-class JCalculator {
-	
-	- jNumber: JTextField
-	- jStack: JList<String>
-	- constraints: GridBagConstraints
-	- setupDisplay(): void
-	- setupButtons(): void
-	- setupStackDisplay(): void
-	- addOperatorButton(name: String, x: int, y: int, color: Color, \n\t operator: Operator): void
-	- update(): void
-}
-
-
-class CalculatorTest {
-	- calculator: Calculator
-	- outputStream: ByteArrayOutputStream
-	+ setUp(): void
-	- simulateInput(input: String): void
-	- getConsoleOutput(): String
-	+ testAddition(): void
-	+ testSubtraction(): void
-	+ testMultiplication(): void
-	+ testDivision(): void
-	+ testSquareRoot(): void
-	+ testSquare(): void
-	+ testNegate(): void
-	+ testEnterPushesValueToStack(): void
-	+ testMemoryStoreAndRecall(): void
-	+ testClearAll(): void
-	+ testDivisionByZero(): void
-	+ testInvalidInput(): void
-	+ testBackspace(): void
-}
-
-
-class Calculator {
-	
-	+ run(): void
-	- processInput(input: String): void
-	- displayState(): void
-	+ {static} main(args: String[]): void
-}
-
-
-class Calculator$OperatorList {
-	+ {static} createOperator(input: String, state: State): Operator
-}
-
-class Backspace {
+class ClearAll {
 	+ execute(state: State): void
 }
 
-class Multiply {
+abstract class DefaultOperator {
 	+ execute(state: State): void
+	# {abstract}operation(value: double): double
 }
 
-class ClearError {
-	+ execute(state: State): void
-}
-
-abstract class Operator {
-	+ {abstract}execute(state: State): void
-}
-
-class Add {
-	+ execute(state: State): void
-}
-
-class Enter {
-	+ execute(state: State): void
+class Divide {
+	# getLeftOperand(state: State): double
+	# operation(value: double): double
 }
 
 class Negate {
+	# operation(value: double): double
+}
+
+class MemoryStore {
 	+ execute(state: State): void
 }
-
-class StackTest {
-	- stack: Stack<Integer>
-	+ setUp(): void
-	+ testPushAndToString(): void
-	+ testPop(): void
-	+ testToArray(): void
-	+ testIterator(): void
-	+ testIsEmpty(): void
-	+ testSize(): void
-	+ testPopFromEmptyStack(): void
-}
-
 
 class State {
 	- stack: Stack<Double>
@@ -215,34 +138,128 @@ class State {
 }
 
 
-class Divide {
-	+ execute(state: State): void
+class Number {
+	- digit: double
+	# operation(value: double): double
 }
 
-class Subtract {
-	+ execute(state: State): void
-}
 
 class MemoryRecall {
 	+ execute(state: State): void
 }
 
-class Number {
-	- digit: int
-	+ execute(state: State): void
+class StackTest {
+	- stack: Stack<Integer>
+	+ setUp(): void
+	+ testPushAndToString(): void
+	+ testPop(): void
+	+ testToArray(): void
+	+ testIterator(): void
+	+ testIsEmpty(): void
+	+ testSize(): void
+	+ testPopFromEmptyStack(): void
 }
 
 
-class DecimalPoint {
-	+ execute(state: State): void
+class Calculator {
+	
+	+ run(): void
+	- processInput(input: String): void
+	- displayState(): void
+	+ {static} main(args: String[]): void
 }
 
-class MemoryStore {
-	+ execute(state: State): void
+
+class Calculator$OperatorList {
+	+ {static} createOperator(input: String, state: State): Operator
 }
 
-class ClearAll {
+class Multiply {
+	# operation(left: double, right: double): double
+	# operation(value: double): double
+}
+
+class CalculatorTest {
+	- calculator: Calculator
+	- outputStream: ByteArrayOutputStream
+	+ setUp(): void
+	- simulateInput(input: String): void
+	- getConsoleOutput(): String
+	+ testAddition(): void
+	+ testSubtraction(): void
+	+ testMultiplication(): void
+	+ testDivision(): void
+	+ testSquareRoot(): void
+	+ testSquare(): void
+	+ testNegate(): void
+	+ testEnterPushesValueToStack(): void
+	+ testMemoryStoreAndRecall(): void
+	+ testClearAll(): void
+	+ testDivisionByZero(): void
+	+ testInvalidInput(): void
+	+ testBackspace(): void
+}
+
+
+class Sqrt {
+	# operation(value: double): double
+}
+
+class JCalculator {
+	
+	- jNumber: JTextField
+	- jStack: JList<String>
+	- constraints: GridBagConstraints
+	- setupDisplay(): void
+	- setupButtons(): void
+	- setupStackDisplay(): void
+	- addOperatorButton(name: String, x: int, y: int, color: Color, \n\t operator: Operator): void
+	- update(): void
+}
+
+
+class Square {
+	# operation(value: double): double
+}
+
+abstract class UnaryOperator {
 	+ execute(state: State): void
+	# assignResult(state: State, result: double): void
+}
+
+class JCalculatorTest {
+	- calculator: JCalculator
+	- displayField: JTextField
+	- stackDisplay: JList<String>
+	+ setUp(): void
+	- getStackContents(): String[]
+	- clickButton(label: String): void
+	+ testAdd(): void
+	+ testBackspace(): void
+	+ testClearAll(): void
+	+ testClearError(): void
+	+ testDecimalPoint(): void
+	+ testDivide(): void
+	+ testEnter(): void
+	+ testInverse(): void
+	+ testMemoryRecallAndStore(): void
+	+ testMultiply(): void
+	+ testNegate(): void
+	+ testNumber(): void
+	+ testSqrt(): void
+	+ testSquare(): void
+	+ testSubtract(): void
+}
+
+
+class Enter {
+	+ execute(state: State): void
+	# operation(value: double): double
+}
+
+class Subtract {
+	# operation(left: double, right: double): double
+	# operation(value: double): double
 }
 
 class StateTest {
@@ -259,30 +276,30 @@ class StateTest {
 }
 
 
-class Sqrt {
-	+ execute(state: State): void
-}
 
 
-
-Operator <|-- Square
-Operator <|-- Inverse
+UnaryOperator <|-- Backspace
+UnaryOperator <|-- DecimalPoint
+DivisionBase <|-- Inverse
+UnaryOperator <|-- BinaryOperator
+BinaryOperator <|-- DivisionBase
+Operator <|-- ClearError
+BinaryOperator <|-- Add
 Iterable <|.. Stack
 Stack +-- Stack$Node
-JFrame <|-- JCalculator
-Calculator +-- Calculator$OperatorList
-Operator <|-- Backspace
-Operator <|-- Multiply
-Operator <|-- ClearError
-Operator <|-- Add
-Operator <|-- Enter
-Operator <|-- Negate
-Operator <|-- Divide
-Operator <|-- Subtract
-Operator <|-- MemoryRecall
-Operator <|-- Number
-Operator <|-- DecimalPoint
+ClearError <|-- ClearAll
+Operator <|-- DefaultOperator
+DivisionBase <|-- Divide
+UnaryOperator <|-- Negate
 Operator <|-- MemoryStore
-Operator <|-- ClearAll
-Operator <|-- Sqrt
+DefaultOperator <|-- Number
+Operator <|-- MemoryRecall
+Calculator +-- Calculator$OperatorList
+BinaryOperator <|-- Multiply
+UnaryOperator <|-- Sqrt
+JFrame <|-- JCalculator
+UnaryOperator <|-- Square
+DefaultOperator <|-- UnaryOperator
+DefaultOperator <|-- Enter
+BinaryOperator <|-- Subtract
 @enduml
