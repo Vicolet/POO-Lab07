@@ -7,13 +7,6 @@ import state.State;
  * Represents the backspace operator. Removes the last digit or character.
  */
 public class Backspace extends DefaultOperator {
-
-    @Override
-    protected boolean validate(State state) {
-        // Prevent backspace when the current value is already "0"
-        return !state.getCurrentValueAsString().equals("0");
-    }
-
     @Override
     protected void performOperation(State state) {
         String currentValueStr = state.getCurrentValueAsString();

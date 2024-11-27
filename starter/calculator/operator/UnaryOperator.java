@@ -21,6 +21,7 @@ public abstract class UnaryOperator extends DefaultOperator {
         double current = state.getCurrentValue();
         double result = unaryOperation(current, state); // Perform the unary operation
         state.setCurrentValue(result); // Update the state with the result
+        state.setResultDisplayed(true);
     }
 
     /**

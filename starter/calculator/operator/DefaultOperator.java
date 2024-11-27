@@ -17,24 +17,7 @@ public abstract class DefaultOperator extends Operator {
      */
     @Override
     public void execute(State state) {
-        if (!validate(state)) {
-            return; // Abort execution if validation fails
-        }
         performOperation(state);
-        // state.setNewEntry(true);
-        state.setResultDisplayed(true);
-    }
-
-    /**
-     * Validates the state before performing the operation.
-     * <p>
-     * Derived classes can override this method to add custom validation.
-     *
-     * @param state the current state of the calculator
-     * @return {@code true} if the operation is valid, {@code false} otherwise
-     */
-    protected boolean validate(State state) {
-        return true; // Default implementation assumes no validation needed
     }
 
     /**

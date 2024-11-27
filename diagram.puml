@@ -21,12 +21,10 @@ Calculator "1"-u->"1" State: state
 
 ' ENDSTATIC
 class Backspace {
-	# validate(state: State): boolean
 	# performOperation(state: State): void
 }
 
 class DecimalPoint {
-	# validate(state: State): boolean
 	# performOperation(state: State): void
 }
 
@@ -90,7 +88,6 @@ class ClearAll {
 
 abstract class DefaultOperator {
 	+ execute(state: State): void
-	# validate(state: State): boolean
 	# {abstract}performOperation(state: State): void
 }
 
@@ -169,7 +166,7 @@ class State {
 
 class Number {
 	- digit: int
-	# performOperation(state: State): void
+	+ performOperation(state: State): void
 }
 
 
@@ -264,11 +261,23 @@ class JCalculatorTest {
 	+ testSqrt(): void
 	+ testSquare(): void
 	+ testSubtract(): void
+	+ testAddWithMultipleEntries(): void
+	+ testDecimalPointMultipleTimes(): void
+	+ testBackspaceWithDecimal(): void
+	+ testDivideByZero(): void
+	+ testEnterPushesValue(): void
+	+ testComplexExpression(): void
+	+ testClearErrorResetsOnlyDisplay(): void
+	+ testMemoryStoreAndRecall(): void
+	+ testNegateOnNegativeNumber(): void
+	+ testSquareAndSquareRoot(): void
+	+ testMultipleStackOperations(): void
+	+ testDecimalPointAfterEnter(): void
+	+ testChainedOperations(): void
 }
 
 
 class Enter {
-	# validate(state: State): boolean
 	# performOperation(state: State): void
 }
 

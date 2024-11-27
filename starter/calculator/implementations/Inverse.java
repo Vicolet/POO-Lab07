@@ -12,6 +12,7 @@ public class Inverse extends UnaryOperator {
      * Performs the inverse operation.
      *
      * @param value the denominator (current value)
+     * @param state the current state of the calculator
      * @return the reciprocal of {@code value}, or NaN if {@code value} is zero
      */
     @Override
@@ -34,15 +35,13 @@ public class Inverse extends UnaryOperator {
         // Perform the operation
         double result = unaryOperation(current, state);
 
-        // Handle division by zero
+        // Handle division by zero or update the state
         if (Double.isNaN(result)) {
             state.setError("Error: Division by zero");
-            return;
+        } else {
+            state.setCurrentValue(result); // Update the state with the result
+            state.setNewEntry(true);
+            state.setResultDisplayed(true);
         }
-
-        // Update the state with the valid result
-        state.setCurrentValue(result);
-        state.setNewEntry(true);
-        state.setResultDisplayed(true);
     }
 }
