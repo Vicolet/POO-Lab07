@@ -1,27 +1,29 @@
 package calculator.implementations;
 
-import calculator.operator.DivisionBase;
+import calculator.operator.UnaryOperator;
 import state.State;
 
 /**
  * Represents the inverse operator (1/x).
  */
-public class Inverse extends DivisionBase {
+public class Inverse extends UnaryOperator {
 
     /**
-     * Implements the logic for calculating the reciprocal.
+     * Performs the inverse operation.
      *
-     * @param left  unused (set to 1 in this case)
-     * @param right the denominator
-     * @return the result of 1 divided by {@code right}
+     * @param value the denominator (current value)
+     * @return the reciprocal of {@code value}, or NaN if {@code value} is zero
      */
     @Override
-    protected double divide(double left, double right) {
-        return 1 / right;
+    protected double unaryOperation(double value, State state) {
+        if (value == 0) {
+            return Double.NaN; // Return NaN for division by zero
+        }
+        return 1 / value; // Perform the inversion
     }
 
     /**
-     * Overriding the execute method to ignore the stack.
+     * Executes the inverse operation and handles errors like division by zero.
      *
      * @param state the current state of the calculator
      */
@@ -29,19 +31,18 @@ public class Inverse extends DivisionBase {
     public void execute(State state) {
         double current = state.getCurrentValue();
 
+        // Perform the operation
+        double result = unaryOperation(current, state);
+
         // Handle division by zero
-        if (current == 0) {
+        if (Double.isNaN(result)) {
             state.setError("Error: Division by zero");
             return;
         }
 
-        state.setCurrentValue(1 / current);
+        // Update the state with the valid result
+        state.setCurrentValue(result);
         state.setNewEntry(true);
         state.setResultDisplayed(true);
-    }
-
-    @Override
-    protected double operation(double value) {
-        return 0;
     }
 }

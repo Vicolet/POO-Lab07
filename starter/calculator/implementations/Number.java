@@ -23,29 +23,32 @@ public class Number extends DefaultOperator {
     }
 
     /**
-     * Updates the calculator state by appending the digit to the current value.
+     * Appends the digit to the current value in the calculator's state.
      *
      * @param state the current state of the calculator
      */
     @Override
-    public void execute(State state) {
+    protected void performOperation(State state) {
         String currentValueStr;
 
-        // If a new entry is being started, replace the current value with the digit
+        // Replace the current value if in "new entry" mode
         if (state.isNewEntry()) {
-            currentValueStr = String.valueOf(digit);
-            state.setNewEntry(false); // Disable "new entry" mode
+            state.setCurrentValue((double) digit); // Set the digit as the new value
+            state.setNewEntry(false);             // Disable new entry mode
         } else {
-            // Append the digit to the current value
-            currentValueStr = state.getCurrentValueAsString() + digit;
+            // Get the current value as a string
+            currentValueStr = state.getCurrentValueAsString();
+
+            // Append the digit to the current value string
+            if (currentValueStr.equals("0")) {
+                currentValueStr = Integer.toString(digit); // Replace "0" with the digit
+            } else {
+                currentValueStr += digit; // Append the digit
+            }
+
+            // Update the current value
+            state.setCurrentValue(Double.parseDouble(currentValueStr));
         }
-
-        // Update the current value in the state
-        state.setCurrentValueString(currentValueStr);
     }
 
-    @Override
-    protected double operation(double value) {
-        return 0;
-    }
 }

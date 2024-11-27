@@ -1,6 +1,7 @@
 package calculator.implementations;
 
 import calculator.operator.UnaryOperator;
+import state.State;
 
 /**
  * Represents the square operator (x^2).
@@ -17,7 +18,7 @@ public class Square extends UnaryOperator {
      * @return the squared value of {@code value}
      */
     @Override
-    protected double operation(double value) {
+    protected double unaryOperation(double value, State state) {
         return value * value; // Return the square of the value
     }
 }

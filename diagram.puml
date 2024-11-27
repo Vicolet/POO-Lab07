@@ -21,23 +21,23 @@ Calculator "1"-u->"1" State: state
 
 ' ENDSTATIC
 class Backspace {
-	# operation(value: double): double
+	# validate(state: State): boolean
+	# performOperation(state: State): void
 }
 
 class DecimalPoint {
-	# operation(value: double): double
-	+ execute(state: State): void
+	# validate(state: State): boolean
+	# performOperation(state: State): void
 }
 
 class Inverse {
-	# divide(left: double, right: double): double
+	# unaryOperation(value: double, state: State): double
 	+ execute(state: State): void
-	# operation(value: double): double
 }
 
 abstract class BinaryOperator {
-	+ execute(state: State): void
-	# {abstract}operation(left: double, right: double): double
+	# unaryOperation(value: double, state: State): double
+	# {abstract}binaryOperation(left: double, right: double): double
 }
 
 abstract class Operator {
@@ -45,7 +45,7 @@ abstract class Operator {
 }
 
 abstract class DivisionBase {
-	# operation(left: double, right: double): double
+	+ execute(state: State): void
 	# {abstract}divide(left: double, right: double): double
 }
 
@@ -63,8 +63,7 @@ class Main {
 }
 
 class Add {
-	# operation(left: double, right: double): double
-	# operation(value: double): double
+	# binaryOperation(left: double, right: double): double
 }
 
 class Stack {
@@ -91,16 +90,44 @@ class ClearAll {
 
 abstract class DefaultOperator {
 	+ execute(state: State): void
-	# {abstract}operation(value: double): double
+	# validate(state: State): boolean
+	# {abstract}performOperation(state: State): void
 }
 
+class StackTest {
+	- stack: Stack<Integer>
+	+ setUp(): void
+	+ testPushAndToString(): void
+	+ testPop(): void
+	+ testToArray(): void
+	+ testIterator(): void
+	+ testIsEmpty(): void
+	+ testSize(): void
+	+ testPopFromEmptyStack(): void
+}
+
+
+class StateTest {
+	
+	+ setUp(): void
+	+ testStackOperations(): void
+	+ testCurrentValue(): void
+	+ testMemoryOperations(): void
+	+ testErrorHandling(): void
+	+ testClearAll(): void
+	+ testFlags(): void
+	+ testStackToArray(): void
+	+ testCurrentValueAsString(): void
+}
+
+
 class Divide {
-	# divide(left: double, right: double): double
-	# operation(value: double): double
+	# binaryOperation(left: double, right: double): double
+	+ execute(state: State): void
 }
 
 class Negate {
-	# operation(value: double): double
+	# unaryOperation(value: double, state: State): double
 }
 
 class MemoryStore {
@@ -142,27 +169,13 @@ class State {
 
 class Number {
 	- digit: int
-	+ execute(state: State): void
-	# operation(value: double): double
+	# performOperation(state: State): void
 }
 
 
 class MemoryRecall {
 	+ execute(state: State): void
 }
-
-class StackTest {
-	- stack: Stack<Integer>
-	+ setUp(): void
-	+ testPushAndToString(): void
-	+ testPop(): void
-	+ testToArray(): void
-	+ testIterator(): void
-	+ testIsEmpty(): void
-	+ testSize(): void
-	+ testPopFromEmptyStack(): void
-}
-
 
 class Calculator {
 	
@@ -178,8 +191,7 @@ class Calculator$OperatorList {
 }
 
 class Multiply {
-	# operation(left: double, right: double): double
-	# operation(value: double): double
+	# binaryOperation(left: double, right: double): double
 }
 
 class CalculatorTest {
@@ -205,7 +217,7 @@ class CalculatorTest {
 
 
 class Sqrt {
-	# operation(value: double): double
+	# unaryOperation(value: double, state: State): double
 }
 
 class JCalculator {
@@ -222,12 +234,12 @@ class JCalculator {
 
 
 class Square {
-	# operation(value: double): double
+	# unaryOperation(value: double, state: State): double
 }
 
 abstract class UnaryOperator {
-	+ execute(state: State): void
-	# assignResult(state: State, result: double): void
+	# performOperation(state: State): void
+	# {abstract}unaryOperation(value: double, state: State): double
 }
 
 class JCalculatorTest {
@@ -256,35 +268,20 @@ class JCalculatorTest {
 
 
 class Enter {
-	+ execute(state: State): void
-	# operation(value: double): double
+	# validate(state: State): boolean
+	# performOperation(state: State): void
 }
 
 class Subtract {
-	# operation(left: double, right: double): double
-	# operation(value: double): double
+	# binaryOperation(left: double, right: double): double
 }
-
-class StateTest {
-	
-	+ setUp(): void
-	+ testStackOperations(): void
-	+ testCurrentValue(): void
-	+ testMemoryOperations(): void
-	+ testErrorHandling(): void
-	+ testClearAll(): void
-	+ testFlags(): void
-	+ testStackToArray(): void
-	+ testCurrentValueAsString(): void
-}
-
 
 
 
 DefaultOperator <|-- Backspace
 DefaultOperator <|-- DecimalPoint
-DivisionBase <|-- Inverse
-DefaultOperator <|-- BinaryOperator
+UnaryOperator <|-- Inverse
+UnaryOperator <|-- BinaryOperator
 BinaryOperator <|-- DivisionBase
 Operator <|-- ClearError
 BinaryOperator <|-- Add
@@ -292,7 +289,7 @@ Iterable <|.. Stack
 Stack +-- Stack$Node
 ClearError <|-- ClearAll
 Operator <|-- DefaultOperator
-DivisionBase <|-- Divide
+BinaryOperator <|-- Divide
 UnaryOperator <|-- Negate
 Operator <|-- MemoryStore
 DefaultOperator <|-- Number

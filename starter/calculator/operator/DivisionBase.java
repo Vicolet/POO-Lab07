@@ -3,27 +3,46 @@ package calculator.operator;
 import state.State;
 
 /**
- * Base class for division-related operations.
+ * Abstract base class for division-related operations.
+ * <p>
+ * This class provides a common framework for handling division operations,
+ * including division by zero handling.
  */
 public abstract class DivisionBase extends BinaryOperator {
 
     /**
-     * Performs a division-related operation. Handles division by zero.
+     * Executes the division-related operation on the calculator's state.
      *
-     * @param left  the numerator (value from the stack)
-     * @param right the denominator (current value)
-     * @return the result of the operation, or NaN if division by zero
+     * @param state the current state of the calculator
      */
     @Override
-    protected double operation(double left, double right) {
-        if (right == 0) {
-            return Double.NaN; // Division by zero
+    public void execute(State state) {
+        // Check if the stack is empty
+        if (state.getStack().isEmpty()) {
+            state.setError("Error: Empty stack");
+            return;
         }
-        return divide(left, right);
+
+        double left = state.pop();  // Get the value from the stack
+        double right = state.getCurrentValue();  // Get the current value
+
+        // Handle division by zero
+        if (right == 0) {
+            state.setError("Error: Division by zero");
+            return;
+        }
+
+        // Perform the specific division logic
+        double result = divide(left, right);
+
+        // Update the state with the result
+        state.setCurrentValue(result);
+        state.setNewEntry(true);
+        state.setResultDisplayed(true);
     }
 
     /**
-     * Defines the specific division logic for the derived classes.
+     * Defines the specific division logic for derived classes.
      *
      * @param left  the numerator
      * @param right the denominator

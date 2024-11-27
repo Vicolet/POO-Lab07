@@ -3,26 +3,32 @@ package calculator.operator;
 import state.State;
 
 /**
- * Represents a unary operator that operates on a single operand.
+ * Represents the base class for unary operators.
+ * <p>
+ * Unary operators perform operations on the current value of the calculator.
+ * Derived classes must implement the {@code unaryOperation} method to define
+ * the specific operation.
  */
 public abstract class UnaryOperator extends DefaultOperator {
 
+    /**
+     * Performs the unary operation on the current value of the calculator.
+     *
+     * @param state the current state of the calculator
+     */
     @Override
-    public void execute(State state) {
-        double currentValue = state.getCurrentValue();
-        double result = operation(currentValue); // Perform unary operation
-        assignResult(state, result);            // Assign result to state
+    protected void performOperation(State state) {
+        double current = state.getCurrentValue();
+        double result = unaryOperation(current, state); // Perform the unary operation
+        state.setCurrentValue(result); // Update the state with the result
     }
 
     /**
-     * Assigns the result of the operation to the calculator state.
+     * Abstract method to define the specific unary operation.
      *
-     * @param state  the current state of the calculator
-     * @param result the result of the operation
+     * @param value the current value of the calculator
+     * @param state the current state of the calculator
+     * @return the result of the unary operation
      */
-    protected void assignResult(State state, double result) {
-        state.setCurrentValue(result);
-        state.setNewEntry(true);        // Prepare for a new entry
-        state.setResultDisplayed(true); // Mark the result as displayed
-    }
+    protected abstract double unaryOperation(double value, State state);
 }

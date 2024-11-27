@@ -10,7 +10,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 
 // TODO: probleme de reconnaissance des nouvelle classe qui hérite de Operator dans la fonction de Jcalculator
-// TODO: pourquoi je dois à chaque fois déclarer la methoe operation avec un seul parametre alors que dans la classe DivisionBase il y a deux parametres
+// TODO: pourquoi je dois à chaque fois déclarer la methode operation avec un seul parametre alors que dans la classe DivisionBase il y a deux parametres
 // TODO: base commune pour square et multiply
 
 public class JCalculator extends JFrame {

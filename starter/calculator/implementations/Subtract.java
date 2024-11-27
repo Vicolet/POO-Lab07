@@ -3,26 +3,19 @@ package calculator.implementations;
 import calculator.operator.BinaryOperator;
 
 /**
- * Represents the subtraction operator. This operator retrieves the top value
- * from the stack, subtracts the current value from it, and updates the calculator's
- * state with the result.
+ * Represents the subtraction operator.
  */
 public class Subtract extends BinaryOperator {
 
     /**
-     * Performs the subtraction operation on the given operands.
+     * Performs the subtraction operation.
      *
-     * @param left  the left operand (value from the stack)
-     * @param right the right operand (current value)
+     * @param left  the left operand
+     * @param right the right operand
      * @return the result of subtracting {@code right} from {@code left}
      */
     @Override
-    protected double operation(double left, double right) {
-        return left - right; // Perform the subtraction
-    }
-
-    @Override
-    protected double operation(double value) {
-        return 0;
+    protected double binaryOperation(double left, double right) {
+        return left - right; // Specific logic for subtraction
     }
 }
