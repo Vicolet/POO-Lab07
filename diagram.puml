@@ -14,6 +14,10 @@ remove Main
 
 ' Additions
 Calculator "1"-u->"1" State: state
+JCalculator "0..1" --> "1" State : possède
+JCalculator "0..1" --> "1" Operator : utilise
+State "0..1" --> "1" "Stack" : valeurs
+Operator "1" --> "1" State
 
 
 ' REMOVE
@@ -40,11 +44,6 @@ abstract class BinaryOperator {
 
 abstract class Operator {
 	+ {abstract}execute(state: State): void
-}
-
-abstract class DivisionBase {
-	+ execute(state: State): void
-	# {abstract}divide(left: double, right: double): double
 }
 
 class ClearError {
@@ -291,7 +290,6 @@ DefaultOperator <|-- Backspace
 DefaultOperator <|-- DecimalPoint
 UnaryOperator <|-- Inverse
 UnaryOperator <|-- BinaryOperator
-BinaryOperator <|-- DivisionBase
 Operator <|-- ClearError
 BinaryOperator <|-- Add
 Iterable <|.. Stack
