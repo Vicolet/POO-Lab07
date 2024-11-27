@@ -1,4 +1,4 @@
-import calculator.JCalculator;
+import starter.JCalculator;
 
 public class Main
 {

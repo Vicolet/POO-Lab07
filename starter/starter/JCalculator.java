@@ -1,12 +1,17 @@
-package calculator;
+package starter;
 
-import calculator.operators.*;
-import calculator.operators.Number;
-import util.Stack;
+import calculator.operator.Operator;
+import calculator.implementations.*;
+import calculator.implementations.Number;
+import state.State;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
+
+// TODO: probleme de reconnaissance des nouvelle classe qui hérite de Operator dans la fonction de Jcalculator
+// TODO: pourquoi je dois à chaque fois déclarer la methoe operation avec un seul parametre alors que dans la classe DivisionBase il y a deux parametres
+// TODO: base commune pour square et multiply
 
 public class JCalculator extends JFrame {
     // Champ pour la gestion de l'état interne
@@ -23,7 +28,7 @@ public class JCalculator extends JFrame {
 
     // Constructeur
     public JCalculator() {
-        super("JCalculator");
+        super("starter.JCalculator");
         state = new State();  // Initialisation de l'état interne de la calculatrice
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         getContentPane().setLayout(new GridBagLayout());
@@ -65,7 +70,8 @@ public class JCalculator extends JFrame {
 
         // Boutons numériques 1 à 9
         for (int i = 1; i < 10; i++) {
-            addOperatorButton(String.valueOf(i), (i - 1) % 3, 4 - (i - 1) / 3, Color.BLUE, new Number(i));
+            addOperatorButton(String.valueOf(i), (i - 1) % 3, 4 - (i - 1) / 3, Color.BLUE, new Number(i) {
+            });
         }
         addOperatorButton("0", 0, 5, Color.BLUE, new Number(0));
 

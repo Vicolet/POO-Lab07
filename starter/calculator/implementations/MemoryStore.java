@@ -1,7 +1,7 @@
-package calculator.operators;
+package calculator.implementations;
 
-import calculator.Operator;
-import calculator.State;
+import calculator.operator.Operator;
+import state.State;
 
 /**
  * Represents the memory store operator. This operator stores the current value

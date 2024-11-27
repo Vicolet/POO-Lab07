@@ -1,7 +1,9 @@
-package calculator;
+package starter;
 
-import calculator.operators.*;
-import calculator.operators.Number;
+import calculator.operator.Operator;
+import calculator.implementations.*;
+import calculator.implementations.Number;
+import state.State;
 
 import java.util.Scanner;
 

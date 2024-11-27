@@ -1,8 +1,7 @@
-package calculator;
+package state;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import util.Stack;
 
 import static org.junit.jupiter.api.Assertions.*;
 

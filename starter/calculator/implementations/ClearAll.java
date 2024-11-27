@@ -1,13 +1,12 @@
-package calculator.operators;
+package calculator.implementations;
 
-import calculator.Operator;
-import calculator.State;
+import state.State;
 
 /**
  * Represents the clear all operator. This operator clears the stack,
  * resets the current value, and removes any errors from the calculator's state.
  */
-public class ClearAll extends Operator {
+public class ClearAll extends ClearError {
 
     /**
      * Executes the clear all operation on the calculator's state.
@@ -19,8 +18,7 @@ public class ClearAll extends Operator {
      */
     @Override
     public void execute(State state) {
-        state.clearAll();           // Clears the stack and resets errors
-        state.setCurrentValue(0.0); // Resets the current value to 0
-        state.setNewEntry(true);    // Prepares for a new entry
+        super.execute(state); // Perform CE operation first
+        state.clearAll();     // Clear the entire stack
     }
 }

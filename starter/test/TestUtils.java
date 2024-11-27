@@ -1,4 +1,4 @@
-package calculator;
+package test;
 
 import javax.swing.*;
 import java.awt.*;
