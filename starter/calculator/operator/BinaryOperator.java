@@ -9,6 +9,11 @@ import state.State;
  * and the current value of the calculator (right operand).
  * Derived classes must implement the {@code binaryOperation}
  * method to define the specific logic.
+ * </p>
+ *
+ * @author Léon Surbeck
+ * @author Victor Nicolet
+ * @date 20.11.2024
  */
 public abstract class BinaryOperator extends UnaryOperator {
 
@@ -16,7 +21,9 @@ public abstract class BinaryOperator extends UnaryOperator {
      * Performs the unary operation using binary operands.
      * <p>
      * Retrieves the left operand from the stack and the right operand from the current value.
-     * Applies the binary operation and returns the result.
+     * Applies the binary operation and returns the result. Updates the state to indicate
+     * that a result is currently displayed.
+     * </p>
      *
      * @param value the current value of the calculator (right operand)
      * @param state the current state of the calculator
@@ -25,13 +32,17 @@ public abstract class BinaryOperator extends UnaryOperator {
     @Override
     protected double unaryOperation(double value, State state) {
         double leftOperand = state.pop(); // Retrieve the top value from the stack
-        double result =  binaryOperation(leftOperand, value); // Perform the binary operation
-        state.setResultDisplayed(true);
+        double result = binaryOperation(leftOperand, value); // Perform the binary operation
+        state.setResultDisplayed(true); // Mark the result as displayed
         return result;
     }
 
     /**
      * Abstract method to define the specific binary operation.
+     * <p>
+     * Derived classes must implement this method to provide the logic
+     * for combining the left and right operands.
+     * </p>
      *
      * @param left  the left operand (value from the stack)
      * @param right the right operand (current value)

@@ -7,6 +7,9 @@ import java.util.NoSuchElementException;
  * A generic stack implementation using a singly linked list.
  *
  * @param <T> the type of elements in the stack
+ * @author Léon Surbeck
+ * @author Victor Nicolet
+ * @date 20.11.2024
  */
 public class Stack<T> implements Iterable<T> {
 

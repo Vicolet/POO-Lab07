@@ -6,17 +6,36 @@ import state.State;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * Unit tests for the {@link State} class.
+ * <p>
+ * This class tests the internal state management of the calculator, including
+ * stack operations, current value management, memory handling, error management,
+ * and formatting utilities.
+ * </p>
+ *
+ * @author Léon Surbeck
+ * @author Victor Nicolet
+ * @date 20.11.2024
+ */
 public class StateTest {
 
     private State state;
 
+    /**
+     * Initializes a fresh {@link State} object before each test.
+     */
     @BeforeEach
     public void setUp() {
         state = new State(); // Initialize a fresh state for each test
     }
 
     /**
-     * Test stack operations (push, pop, isEmpty).
+     * Tests stack operations: push, pop, and isEmpty.
+     * <p>
+     * Verifies that elements are pushed and popped in LIFO order, and the stack
+     * correctly reflects its state after operations.
+     * </p>
      */
     @Test
     public void testStackOperations() {
@@ -32,7 +51,10 @@ public class StateTest {
     }
 
     /**
-     * Test setting and retrieving the current value.
+     * Tests setting and retrieving the current value.
+     * <p>
+     * Verifies that the current value is updated and retrieved correctly.
+     * </p>
      */
     @Test
     public void testCurrentValue() {
@@ -44,7 +66,10 @@ public class StateTest {
     }
 
     /**
-     * Test storing and recalling from memory.
+     * Tests storing and recalling values from memory.
+     * <p>
+     * Verifies that memory operations work as expected, including overwriting stored values.
+     * </p>
      */
     @Test
     public void testMemoryOperations() {
@@ -60,7 +85,10 @@ public class StateTest {
     }
 
     /**
-     * Test error management.
+     * Tests error management: setting, retrieving, and clearing errors.
+     * <p>
+     * Verifies that errors are handled correctly and cleared appropriately.
+     * </p>
      */
     @Test
     public void testErrorHandling() {
@@ -74,7 +102,11 @@ public class StateTest {
     }
 
     /**
-     * Test clearing all values.
+     * Tests clearing all state values.
+     * <p>
+     * Verifies that all state attributes, including stack, memory, and current value,
+     * are reset to their initial states.
+     * </p>
      */
     @Test
     public void testClearAll() {
@@ -88,10 +120,14 @@ public class StateTest {
         assertEquals(0.0, state.getCurrentValue(), "Current value should be reset to 0.0");
         assertTrue(state.getStack().isEmpty(), "Stack should be cleared");
         assertNull(state.getError(), "Error should be cleared");
-        assertEquals(0.0, state.recallFromMemory(), "Memory should be cleared");}
+        assertEquals(0.0, state.recallFromMemory(), "Memory should be cleared");
+    }
 
     /**
-     * Test indicator flags (isNewEntry, isResultDisplayed, isDecimalMode).
+     * Tests indicator flags: isNewEntry, isResultDisplayed, and isDecimalMode.
+     * <p>
+     * Verifies that the flags are updated correctly and maintain their expected behavior.
+     * </p>
      */
     @Test
     public void testFlags() {
@@ -110,7 +146,10 @@ public class StateTest {
     }
 
     /**
-     * Test conversion of stack to array.
+     * Tests converting the stack to an array of strings.
+     * <p>
+     * Verifies that the array representation matches the expected LIFO order.
+     * </p>
      */
     @Test
     public void testStackToArray() {
@@ -128,7 +167,11 @@ public class StateTest {
     }
 
     /**
-     * Test current value as string formatting.
+     * Tests formatting of the current value as a string.
+     * <p>
+     * Verifies that integers are displayed without decimal points, and doubles are
+     * formatted correctly.
+     * </p>
      */
     @Test
     public void testCurrentValueAsString() {

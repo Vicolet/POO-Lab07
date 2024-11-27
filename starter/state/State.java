@@ -4,10 +4,17 @@ import util.Stack;
 
 /**
  * Represents the internal state of the calculator, including the stack,
- * current value, memory, and error messages. Provides utility methods
- * to manipulate and retrieve these values.
+ * current value, memory, and error messages.
+ * <p>
+ * Provides utility methods to manipulate and retrieve these values.
+ * </p>
+ *
+ * @author Léon Surbeck
+ * @author Victor Nicolet
+ * @date 20.11.2024
  */
 public class State {
+
     private Stack<Double> stack = new Stack<>();
     private Double currentValue = 0.0;
     private Double memory = null;
@@ -47,16 +54,13 @@ public class State {
         if (currentValueString != null) {
             return currentValueString;
         }
-
         if (currentValue == null || currentValue == 0.0) {
             return "0";
         }
-
         String valueStr = currentValue.toString();
         if (valueStr.endsWith(".0")) {
             return valueStr.substring(0, valueStr.length() - 2);
         }
-
         return valueStr;
     }
 
@@ -113,11 +117,9 @@ public class State {
     public String[] getStackArray() {
         Object[] stackObjects = stack.toArray();
         String[] stackStrings = new String[stackObjects.length];
-
         for (int i = 0; i < stackObjects.length; i++) {
             stackStrings[i] = formatDouble((Double) stackObjects[i]);
         }
-
         return stackStrings;
     }
 

@@ -4,9 +4,28 @@ import calculator.operator.DefaultOperator;
 import state.State;
 
 /**
- * Represents the backspace operator. Removes the last digit or character.
+ * Represents the backspace operator.
+ * <p>
+ * This operator removes the last digit or character from the current value
+ * in the calculator's state. If the resulting value becomes empty or invalid,
+ * it resets to 0.
+ * </p>
+ *
+ * @author Léon Surbeck
+ * @author Victor Nicolet
+ * @date 20.11.2024
  */
 public class Backspace extends DefaultOperator {
+
+    /**
+     * Performs the backspace operation.
+     * <p>
+     * Removes the last character from the current value. If the resulting value
+     * is empty, it resets the value to 0.
+     * </p>
+     *
+     * @param state the current state of the calculator
+     */
     @Override
     protected void performOperation(State state) {
         String currentValueStr = state.getCurrentValueAsString();

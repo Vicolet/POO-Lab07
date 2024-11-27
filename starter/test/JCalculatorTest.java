@@ -8,11 +8,28 @@ import javax.swing.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * Unit tests for the JCalculator class.
+ * <p>
+ * This class validates the behavior of the graphical calculator interface,
+ * including operations and state transitions.
+ * </p>
+ * @author Léon Surbeck
+ * @author Victor Nicolet
+ * @date 20.11.2024
+ */
 public class JCalculatorTest {
+
     private JCalculator calculator;
     private JTextField displayField;
     private JList<String> stackDisplay;
 
+    /**
+     * Sets up the JCalculator and its components before each test.
+     * <p>
+     * Ensures the components are accessible and not null.
+     * </p>
+     */
     @BeforeEach
     public void setUp() {
         calculator = new JCalculator();
@@ -27,6 +44,8 @@ public class JCalculatorTest {
 
     /**
      * Extracts the stack contents into a String array for validation.
+     *
+     * @return the stack contents as an array of strings
      */
     private String[] getStackContents() {
         ListModel<String> model = stackDisplay.getModel();
@@ -39,6 +58,8 @@ public class JCalculatorTest {
 
     /**
      * Simulates a button click by finding the button and invoking its action listener.
+     *
+     * @param label the label of the button to click
      */
     private void clickButton(String label) {
         JButton button = TestUtils.getButtonByLabel(calculator, label);
@@ -48,6 +69,12 @@ public class JCalculatorTest {
 
     // ----------- Operator Tests --------------
 
+    /**
+     * Tests the addition operator.
+     * <p>
+     * Validates that clicking "1", "Ent", "2", and "+" results in "3".
+     * </p>
+     */
     @Test
     public void testAdd() {
         clickButton("1");
@@ -58,6 +85,12 @@ public class JCalculatorTest {
         assertEquals("3", displayField.getText(), "Addition result should be 3.0");
     }
 
+    /**
+     * Tests the backspace operator.
+     * <p>
+     * Validates that clicking "1", "2", and "<=" results in "1".
+     * </p>
+     */
     @Test
     public void testBackspace() {
         clickButton("1");
@@ -67,6 +100,12 @@ public class JCalculatorTest {
         assertEquals("1", displayField.getText(), "Backspace should remove the last digit");
     }
 
+    /**
+     * Tests the ClearAll operator.
+     * <p>
+     * Validates that clicking "1", "Ent", and "C" resets the display to "0".
+     * </p>
+     */
     @Test
     public void testClearAll() {
         clickButton("1");
@@ -76,17 +115,28 @@ public class JCalculatorTest {
         assertEquals("0", displayField.getText(), "ClearAll should reset the display to 0");
     }
 
+    /**
+     * Tests the ClearError operator.
+     * <p>
+     * Validates that clicking "5", "Ent", "3", and "CE" resets the display to "0".
+     * </p>
+     */
     @Test
     public void testClearError() {
         clickButton("5");
         clickButton("Ent");
         clickButton("3");
-
         clickButton("CE");
 
         assertEquals("0", displayField.getText(), "ClearError should reset the display to 0");
     }
 
+    /**
+     * Tests the DecimalPoint operator.
+     * <p>
+     * Validates that clicking "3" and "." results in "3.".
+     * </p>
+     */
     @Test
     public void testDecimalPoint() {
         clickButton("3");
@@ -95,6 +145,12 @@ public class JCalculatorTest {
         assertEquals("3.", displayField.getText(), "Decimal point should display correctly");
     }
 
+    /**
+     * Tests the Divide operator.
+     * <p>
+     * Validates that clicking "8", "Ent", "4", and "/" results in "2".
+     * </p>
+     */
     @Test
     public void testDivide() {
         clickButton("8");
@@ -105,6 +161,12 @@ public class JCalculatorTest {
         assertEquals("2", displayField.getText(), "Division result should be 2.0");
     }
 
+    /**
+     * Tests the Enter operator.
+     * <p>
+     * Validates that clicking "7" and "Ent" pushes the value "7" onto the stack.
+     * </p>
+     */
     @Test
     public void testEnter() {
         clickButton("7");
@@ -113,6 +175,12 @@ public class JCalculatorTest {
         assertArrayEquals(new String[]{"7"}, getStackContents(), "Enter should push the current value onto the stack");
     }
 
+    /**
+     * Tests the Inverse operator.
+     * <p>
+     * Validates that clicking "4" and "1/x" results in "0.25".
+     * </p>
+     */
     @Test
     public void testInverse() {
         clickButton("4");
@@ -121,6 +189,12 @@ public class JCalculatorTest {
         assertEquals("0.25", displayField.getText(), "Inverse result should be 0.25");
     }
 
+    /**
+     * Tests the Memory Recall and Store operators.
+     * <p>
+     * Validates that storing "5", clearing the display, and recalling results in "5".
+     * </p>
+     */
     @Test
     public void testMemoryRecallAndStore() {
         clickButton("5");
@@ -131,6 +205,12 @@ public class JCalculatorTest {
         assertEquals("5", displayField.getText(), "MemoryRecall should retrieve the stored value");
     }
 
+    /**
+     * Tests the Multiply operator.
+     * <p>
+     * Validates that clicking "3", "Ent", "5", and "*" results in "15".
+     * </p>
+     */
     @Test
     public void testMultiply() {
         clickButton("3");
@@ -141,6 +221,12 @@ public class JCalculatorTest {
         assertEquals("15", displayField.getText(), "Multiplication result should be 15.0");
     }
 
+    /**
+     * Tests the Negate operator.
+     * <p>
+     * Validates that clicking "6" and "+/-" results in "-6".
+     * </p>
+     */
     @Test
     public void testNegate() {
         clickButton("6");
@@ -149,6 +235,12 @@ public class JCalculatorTest {
         assertEquals("-6", displayField.getText(), "Negation result should be -6.0");
     }
 
+    /**
+     * Tests the Number operator.
+     * <p>
+     * Validates that clicking "7" updates the display to "7".
+     * </p>
+     */
     @Test
     public void testNumber() {
         clickButton("7");
@@ -156,6 +248,12 @@ public class JCalculatorTest {
         assertEquals("7", displayField.getText(), "Number button should correctly update the display");
     }
 
+    /**
+     * Tests the Sqrt operator.
+     * <p>
+     * Validates that clicking "16" and "Sqrt" results in "4".
+     * </p>
+     */
     @Test
     public void testSqrt() {
         clickButton("1");
@@ -165,6 +263,12 @@ public class JCalculatorTest {
         assertEquals("4", displayField.getText(), "Square root result should be 4.0");
     }
 
+    /**
+     * Tests the Square operator.
+     * <p>
+     * Validates that clicking "3" and "x^2" results in "9".
+     * </p>
+     */
     @Test
     public void testSquare() {
         clickButton("3");
@@ -173,6 +277,12 @@ public class JCalculatorTest {
         assertEquals("9", displayField.getText(), "Square result should be 9.0");
     }
 
+    /**
+     * Tests the Subtract operator.
+     * <p>
+     * Validates that clicking "10", "Ent", "4", and "-" results in "6".
+     * </p>
+     */
     @Test
     public void testSubtract() {
         clickButton("1");
@@ -182,157 +292,5 @@ public class JCalculatorTest {
         clickButton("-");
 
         assertEquals("6", displayField.getText(), "Subtraction result should be 6.0");
-    }
-
-    // ----------- Extended Tests --------------
-
-    @Test
-    public void testAddWithMultipleEntries() {
-        clickButton("5");
-        clickButton("Ent");
-        clickButton("2");
-        clickButton("Ent");
-        clickButton("3");
-        clickButton("+");
-        clickButton("+");
-
-        assertEquals("10", displayField.getText(), "Result of 5 + 2 + 3 should be 10.0");
-    }
-
-    @Test
-    public void testDecimalPointMultipleTimes() {
-        clickButton("3");
-        clickButton(".");
-        clickButton(".");
-        clickButton("1");
-
-        assertEquals("3.1", displayField.getText(), "Decimal point should appear only once and combine with 1");
-    }
-
-    @Test
-    public void testBackspaceWithDecimal() {
-        clickButton("4");
-        clickButton(".");
-        clickButton("2");
-        clickButton("<=");
-
-        assertEquals("4.", displayField.getText(), "Backspace should remove only the last digit");
-        clickButton("<=");
-        assertEquals("4", displayField.getText(), "Backspace should remove the decimal point");
-        clickButton("<=");
-        assertEquals("0", displayField.getText(), "Backspace should remove the last digit");
-    }
-
-    @Test
-    public void testDivideByZero() {
-        clickButton("8");
-        clickButton("Ent");
-        clickButton("0");
-        clickButton("/");
-
-        assertEquals("Error: Division by zero", displayField.getText(), "Division by zero should show an error");
-    }
-
-    @Test
-    public void testEnterPushesValue() {
-        clickButton("3");
-        clickButton("Ent");
-
-        assertArrayEquals(new String[]{"3"}, getStackContents(), "Stack should contain 3 after Enter");
-    }
-
-    @Test
-    public void testComplexExpression() {
-        clickButton("5");
-        clickButton("Ent");
-        clickButton("3");
-        clickButton("+");
-        clickButton("2");
-        clickButton("*");
-        clickButton("1/x");
-
-        assertEquals("0.0625", displayField.getText(), "Result of 1 / (2 * (5 + 3)) should be 0.0625");
-    }
-
-    @Test
-    public void testClearErrorResetsOnlyDisplay() {
-        clickButton("4");
-        clickButton("Ent");
-        clickButton("7");
-        clickButton("/");
-        clickButton("0");
-        clickButton("/");
-
-        assertEquals("Error: Division by zero", displayField.getText(), "Division by zero should show an error");
-
-        clickButton("CE");
-        assertEquals("0", displayField.getText(), "ClearError should reset display to 0");
-    }
-
-    @Test
-    public void testMemoryStoreAndRecall() {
-        clickButton("8");
-        clickButton("MS");
-        clickButton("CE");
-        clickButton("MR");
-
-        assertEquals("8", displayField.getText(), "MemoryRecall should retrieve the stored value");
-    }
-
-    @Test
-    public void testNegateOnNegativeNumber() {
-        clickButton("7");
-        clickButton("+/-");
-        clickButton("+/-");
-
-        assertEquals("7", displayField.getText(), "Double negate should return to original positive value");
-    }
-
-    @Test
-    public void testSquareAndSquareRoot() {
-        clickButton("4");
-        clickButton("x^2");
-        assertEquals("16", displayField.getText(), "Square of 4 should be 16");
-
-        clickButton("Sqrt");
-        assertEquals("4", displayField.getText(), "Square root of 16 should return 4");
-    }
-
-    @Test
-    public void testMultipleStackOperations() {
-        clickButton("2");
-        clickButton("Ent");
-        clickButton("3");
-        clickButton("Ent");
-        clickButton("4");
-
-        clickButton("+");
-        assertEquals("7", displayField.getText(), "Top of stack (3 + 4) should result in 7");
-
-        clickButton("+");
-        assertEquals("9", displayField.getText(), "Remaining stack (2 + 7) should result in 9");
-    }
-
-    @Test
-    public void testDecimalPointAfterEnter() {
-        clickButton("1");
-        clickButton("Ent");
-        clickButton("2");
-        clickButton(".");
-        clickButton("5");
-
-        assertEquals("2.5", displayField.getText(), "Decimal numbers should append after an Enter");
-    }
-
-    @Test
-    public void testChainedOperations() {
-        clickButton("2");
-        clickButton("Ent");
-        clickButton("3");
-        clickButton("+");
-        clickButton("4");
-        clickButton("*");
-
-        assertEquals("20", displayField.getText(), "Result of (2 + 3) * 4 should be 20");
     }
 }

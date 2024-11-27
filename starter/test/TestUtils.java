@@ -3,6 +3,16 @@ package test;
 import javax.swing.*;
 import java.awt.*;
 
+/**
+ * Utility class for testing Swing components.
+ * <p>
+ * This class provides helper methods to find components by name or label in a container.
+ * </p>
+ *  *
+ *  * @author Léon Surbeck
+ *  * @author Victor Nicolet
+ *  * @date 20.11.2024
+ */
 public class TestUtils {
 
     /**
